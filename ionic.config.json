@@ -1,0 +1,7 @@
+{
+  "name": "AIChat",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}

@@ -1,6 +1,6 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
-import './Home.css';
+import { IonButton, IonContent, IonHeader, IonNavLink, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import AIChatComponent from '../components/AIChatComponent'
+import GenerateImageComponent from '../components/GenerateImageComponent';
 
 const Home: React.FC = () => {
   return (
@@ -10,14 +10,18 @@ const Home: React.FC = () => {
           <IonTitle>AIChat</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">AIChat</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <ExploreContainer />
-      </IonContent>
+      <IonContent className="ion-padding">
+          <div className="container">
+            <div className="content-center">
+              <IonNavLink routerDirection="forward" component={() => <AIChatComponent />}>
+                <IonButton color="light" shape="round" class="card-btn">Chat With AI</IonButton>
+              </IonNavLink><br></br><br></br>
+              <IonNavLink routerDirection="forward" component={() => <GenerateImageComponent />}>
+                <IonButton color="light" shape="round" class="card-btn">Generate Image</IonButton>
+              </IonNavLink>
+            </div>
+          </div>
+        </IonContent>
     </IonPage>
   );
 };

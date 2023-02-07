@@ -1,12 +1,11 @@
-import './ExploreContainer.css';
+import './AIChatComponent.css';
 import { Configuration, OpenAIApi } from "openai";
 import React, { useState } from 'react';
-import { IonButton, IonCard, IonContent, IonInput, IonItem, IonLabel } from '@ionic/react';
+import { IonBackButton, IonButton, IonButtons, IonCard, IonContent, IonHeader, IonItem, IonLabel, IonTextarea, IonTitle, IonToolbar, IonIcon } from '@ionic/react';
+import { person, logoReact } from 'ionicons/icons';
 import config from '../config';
 
-interface ContainerProps { }
-
-const ExploreContainer: React.FC<ContainerProps> = () => {
+function AIChatComponent() {
   const [currentInputChat, setCurrentInputChat] = useState('');
   const [conversationHistory, setConversationHistory] = useState('');
   const [inputChatHistory, setinputChatHistory] = useState<string[]>([]);
@@ -33,10 +32,11 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: prompt,
+      temperature: 0.7,
       max_tokens: 2048
     });
     console.log(completion.data.choices[0].text)
-    return String(completion.data.choices[0].text).trim();
+    return completion.data.choices[0].text!.trim();
   }
 
   const onSendButtonClick =async ()=>{
@@ -51,19 +51,36 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
   }
 
   return (
-    <IonContent className="ion-padding">
-      <IonItem>
-        <IonLabel position="floating">Write down here to chat with AI?</IonLabel>
-        <IonInput placeholder="Enter text" value={currentInputChat} onIonChange={e => setCurrentInputChat(e.detail.value!)}></IonInput>
-        <IonButton onClick={ () => onSendButtonClick()} shape="round">Send</IonButton><br></br>
-      </IonItem>
-      {Array.from({length: outputChatHistory?.length}, (_, i) => (
-        <IonCard key={i}>        
-          <p>{outputChatHistory[i]}</p>
-        </IonCard>
-      ))}
-    </IonContent>
+    <>
+      <IonHeader>
+        <IonToolbar>
+        <IonButtons slot="start">
+            <IonBackButton></IonBackButton>
+        </IonButtons>
+        <IonTitle>AIChat</IonTitle>
+        </IonToolbar>
+      </IonHeader>      
+      <IonContent className="ion-padding">
+        <IonItem>
+          <IonLabel position="floating">Write down here to chat with AI?</IonLabel>
+          <IonTextarea placeholder="Enter text" autoGrow={true} value={currentInputChat} onIonChange={e => setCurrentInputChat(e.detail.value!)}/>
+          <IonButton onClick={ () => onSendButtonClick()} color="light" shape="round">Send</IonButton><br></br>
+        </IonItem>
+        {Array.from({length: outputChatHistory?.length}, (_, i) => (
+          <div key={i}>
+            <IonCard class="ion-padding">
+              <IonIcon icon={person}></IonIcon>:          
+              <p>{inputChatHistory[i]}</p>
+            </IonCard>
+            <IonCard class="ion-padding">
+              <IonIcon icon={logoReact}></IonIcon>:
+              <p>{outputChatHistory[i]}</p>
+            </IonCard>
+          </div>
+        ))}
+      </IonContent>
+    </>
   );
 };
 
-export default ExploreContainer;
+export default AIChatComponent;

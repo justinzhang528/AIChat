@@ -234,3 +234,9 @@ http://ionicframework.com/docs/theming/ */
     --ion-card-background: #1e1e1e;
   }
 }
+
+.textarea-container {
+  border-radius: 20px;
+  border: 1px solid var(--ion-color-primary-contrast);
+  padding: 10px;
+}

@@ -6,7 +6,7 @@ import config from '../config';
 
 function GenerateImageComponent() {
     const [prompt, setPrompt] = useState("");
-    const [result, setResult] = useState("https://ionicframework.com/docs/img/demos/card-media.png");
+    const [result, setResult] = useState("assets/icon/openai.png");
     const [loading, setLoading] = useState(false);
     const [placeholder, setPlaceholder] = useState("");
     const configuration = new Configuration({

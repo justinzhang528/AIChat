@@ -22,3 +22,66 @@
 .container a {
   text-decoration: none;
 }
+
+.chat-history {
+  overflow-y: scroll;
+  height: calc(100% - 120px);
+  padding: 20px;
+}
+
+.chat-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  padding: 0 20px;
+}
+
+.own-message {
+  /* display: flex; */
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.own-message .message-content {
+  background-color: lightblue;
+  color: white;
+  padding: 10px;
+  border-radius: 10px 10px 0 10px;
+}
+
+.own-message .message-time {
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.other-message {
+  /* display: flex; */
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.other-message .message-content {
+  background-color: lightcyan;
+  color: black;
+  padding: 10px;
+  border-radius: 10px 10px 10px 0;
+}
+
+.other-message .message-time {
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.chat-form ion-input, .chat-form ion-button {
+  width: 100%;
+  max-width: 500px;
+  height: 40px;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.chat-form ion-button {
+  height: 50px;
+  width: 80px;
+}

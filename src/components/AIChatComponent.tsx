@@ -1,8 +1,9 @@
 import './AIChatComponent.css';
 import { Configuration, OpenAIApi } from "openai";
 import React, { useRef, useState } from 'react';
-import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonItem, IonLabel, IonTextarea, IonTitle, IonToolbar, IonList, IonAvatar, IonText, ScrollDetail, IonFooter } from '@ionic/react';
+import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonItem, IonLabel, IonTextarea, IonTitle, IonToolbar, IonList, IonAvatar, IonText, ScrollDetail, IonFooter, IonIcon } from '@ionic/react';
 import config from '../config';
+import { send } from 'ionicons/icons';
 
 interface ChatMessage {
   message: string;
@@ -97,7 +98,7 @@ function AIChatComponent() {
         </IonToolbar>
       </IonHeader>
       <IonContent scrollEvents={true} ref={contentRef}>
-        <IonList ref={listRef}>
+        <IonList ref={listRef} lines="none">
           {chatHistory.map((item, index) => (
             <IonItem key={index} className={item.sender === 'Q' ? 'own-message' : 'other-message'}>
               <IonAvatar slot={item.sender === 'Q' ? 'end' : 'start'}>
@@ -114,8 +115,8 @@ function AIChatComponent() {
         </IonList>
       </IonContent>
       <form onSubmit={handleSubmit} className="chat-form">
-        <IonTextarea placeholder="Enter message..." autoGrow={true} value={currentInputMsg} onIonChange={e => setCurrentInputMsg(e.detail.value!)}/>
-        <IonButton type="submit" shape='round' color='light'>Send</IonButton>
+        <IonTextarea onClick={scrollToBottom} placeholder="Enter message..." autoGrow={true} value={currentInputMsg} onIonChange={e => setCurrentInputMsg(e.detail.value!)}/>
+        <IonButton type="submit" shape='round' color='light'><IonIcon icon={send}></IonIcon></IonButton>
       </form>
     </>
   );

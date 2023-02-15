@@ -98,13 +98,13 @@ function AIChatComponent() {
         </IonToolbar>
       </IonHeader>
       <IonContent scrollEvents={true} ref={contentRef}>
-        <IonList ref={listRef} lines="none">
+        <IonList ref={listRef} lines='none'>
           {chatHistory.map((item, index) => (
             <IonItem key={index} className={item.sender === 'Q' ? 'own-message' : 'other-message'}>
               <IonAvatar slot={item.sender === 'Q' ? 'end' : 'start'}>
                 <img src={item.sender === 'Q' ? 'assets/icon/puppy.png' : 'assets/icon/ai.png'}/>
               </IonAvatar>
-              <IonLabel className="message-content">
+              <IonLabel className="message-content" class="ion-text-wrap">
                 <IonText>
                     <p>{item.message}</p>
                 </IonText>
@@ -115,8 +115,8 @@ function AIChatComponent() {
         </IonList>
       </IonContent>
       <form onSubmit={handleSubmit} className="chat-form">
-        <IonTextarea onClick={scrollToBottom} placeholder="Enter message..." autoGrow={true} value={currentInputMsg} onIonChange={e => setCurrentInputMsg(e.detail.value!)}/>
-        <IonButton type="submit" shape='round' color='light'><IonIcon icon={send}></IonIcon></IonButton>
+          <IonTextarea onClick={scrollToBottom} placeholder="Enter message..." autoGrow={true} value={currentInputMsg} onIonChange={e => setCurrentInputMsg(e.detail.value!)}/>
+          <IonButton type="submit" shape='round' color='light'><IonIcon icon={send}></IonIcon></IonButton>          
       </form>
     </>
   );

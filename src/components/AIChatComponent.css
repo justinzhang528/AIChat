@@ -31,17 +31,11 @@
   padding: 0 10px;
 }
 
-.own-message {
-  /* display: flex; */
-  justify-content: flex-end;
-  align-items: center;
-}
-
 .own-message .message-content {
-  background-color: lightblue;
-  color: white;
+  background-color: #007aff;
+  color: #ffffff;
   padding: 10px;
-  border-radius: 10px 10px 0 10px;
+  border-radius: 20px 0px 20px 20px;
 }
 
 .own-message .message-time {
@@ -49,17 +43,13 @@
   margin-top: 5px;
 }
 
-.other-message {
-  /* display: flex; */
-  justify-content: flex-start;
-  align-items: center;
-}
-
 .other-message .message-content {
-  background-color: lightcyan;
+  background-color: #f2f2f2;
   color: black;
   padding: 10px;
-  border-radius: 10px 10px 10px 0;
+  border-radius: 0px 20px 20px 20px;  
+  display: inline;
+  justify-content: left;
 }
 
 .other-message .message-time {
@@ -78,4 +68,8 @@
 .chat-form ion-button {
   height: 50px;
   width: 80px;
+}
+
+.transparent {
+  --background: transparent;
 }

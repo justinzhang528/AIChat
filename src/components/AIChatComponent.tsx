@@ -1,7 +1,7 @@
 import './AIChatComponent.css';
 import { Configuration, OpenAIApi } from "openai";
 import React, { useRef, useState } from 'react';
-import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonItem, IonLabel, IonTextarea, IonTitle, IonToolbar, IonList, IonAvatar, IonText, ScrollDetail, IonFooter, IonIcon } from '@ionic/react';
+import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonItem, IonLabel, IonTextarea, IonTitle, IonToolbar, IonList, IonAvatar, IonText, ScrollDetail, IonFooter, IonIcon, useIonToast } from '@ionic/react';
 import config from '../config';
 import { send } from 'ionicons/icons';
 
@@ -12,6 +12,7 @@ interface ChatMessage {
 }
 
 function AIChatComponent() {
+  const [present] = useIonToast();
   const savedHistoryJson = JSON.parse(localStorage.getItem('chatHistory')!);
   const savedHistory:ChatMessage[] = [];
   if(savedHistoryJson !== null){
@@ -24,6 +25,13 @@ function AIChatComponent() {
   const contentRef = useRef<HTMLIonContentElement>(null);
   const listRef = useRef<HTMLIonListElement>(null);  
 
+  const presentToast = (message: string) => {
+    present({
+      message: message,
+      duration: 3000,
+      position: 'bottom'
+    });
+  };
 
   const getPromptByChatHistory=()=>{
     let chat = "";
@@ -44,14 +52,25 @@ function AIChatComponent() {
   const openai = new OpenAIApi(configuration);
 
   async function getAIResult(prompt: string) {
-    const completion = await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: prompt,
-      temperature: 0.7,
-      max_tokens: 4096
-    });
-    console.log(completion.data.choices[0].text)
-    return completion.data.choices[0].text!.trim();
+    try{      
+      const completion = await openai.createCompletion({
+        model: "text-davinci-003",
+        prompt: prompt,
+        temperature: 0.7,
+        max_tokens: 4096
+      });
+      console.log(completion.data.choices[0].text)
+      return completion.data.choices[0].text!.trim();
+    }catch(error: any){
+      if (error.response) {
+        console.log(error.response.status);
+        console.log(error.response.data.error.message);
+        presentToast(error.response.data.error.message);
+      } else {        
+        presentToast(error.message);
+      }
+      return '';
+    }
   }
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -67,7 +86,10 @@ function AIChatComponent() {
     const prompt = getPromptByChatHistory();
     setCurrentInputMsg('');
     scrollToBottom();
-    let aiMsg = await Promise.resolve(getAIResult(prompt));    
+    let aiMsg = await Promise.resolve(getAIResult(prompt));
+    if(aiMsg==''){
+      return; //if no response from openai api, do nothing
+    }   
     aiMsg = aiMsg.trim();
     if (aiMsg.startsWith("A: ")) {
       aiMsg = aiMsg.substring(3);
@@ -100,7 +122,7 @@ function AIChatComponent() {
       <IonContent scrollEvents={true} ref={contentRef}>
         <IonList ref={listRef} lines='none'>
           {chatHistory.map((item, index) => (
-            <IonItem key={index} className={item.sender === 'Q' ? 'own-message' : 'other-message'}>
+            <IonItem key={index} className={item.sender === 'Q' ? 'own-message' : 'other-message'} lines='none'>
               <IonAvatar slot={item.sender === 'Q' ? 'end' : 'start'}>
                 <img src={item.sender === 'Q' ? 'assets/icon/puppy.png' : 'assets/icon/ai.png'}/>
               </IonAvatar>

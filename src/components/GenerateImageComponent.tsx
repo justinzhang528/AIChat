@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { IonBackButton, IonButtons, IonHeader, IonContent, IonToolbar, IonTitle, IonCard, IonCardHeader, IonIcon, IonCardContent, IonButton, IonTextarea, IonCardSubtitle, IonLabel, IonItem } from '@ionic/react';
+import { IonBackButton, IonButtons, IonHeader, IonContent, IonToolbar, IonTitle, IonCard, IonCardHeader, IonIcon, IonCardContent, IonButton, IonTextarea, IonCardSubtitle, IonLabel, IonItem, useIonToast } from '@ionic/react';
 import { save } from 'ionicons/icons';
 import { Configuration, OpenAIApi } from 'openai';
 import config from '../config';
 
 function GenerateImageComponent() {
+    const [present] = useIonToast();
     const [prompt, setPrompt] = useState("");
     const [result, setResult] = useState("assets/icon/openai.png");
     const [loading, setLoading] = useState(false);
@@ -13,18 +14,36 @@ function GenerateImageComponent() {
         apiKey: config.OPENAI_API_KEY,
     });
 
+    const presentToast = (message: string) => {
+      present({
+        message: message,
+        duration: 3000,
+        position: 'bottom'
+      });
+    };
+
     const openai = new OpenAIApi(configuration);
 
     const generateImage = async () => {
+      try{
         setPlaceholder(`Search ${prompt}..`);
         setLoading(true);
         const res = await openai.createImage({
             prompt: prompt,
             n: 1,
-            size: "512x512",
+            size: "1024x1024",
         });
         setLoading(false);
         setResult(res.data.data[0].url!);
+      }catch(error: any){
+        if (error.response) {
+          console.log(error.response.status);
+          console.log(error.response.data);
+          presentToast(error.response.data.error.message);
+        } else {
+          presentToast(error.message);
+        }
+      }
     };
 
     const downloadImage = () => {

@@ -14,10 +14,10 @@ const Home: React.FC = () => {
           <div className="container">
             <div className="content-center">
               <IonNavLink routerDirection="forward" component={() => <AIChatComponent />}>
-                <IonButton color="light" shape="round" class="card-btn">Chat With AI</IonButton>
+                <IonButton shape="round" class="card-btn">Chat With AI</IonButton>
               </IonNavLink><br></br><br></br>
               <IonNavLink routerDirection="forward" component={() => <GenerateImageComponent />}>
-                <IonButton color="light" shape="round" class="card-btn">Generate Image</IonButton>
+                <IonButton shape="round" class="card-btn">Generate Image</IonButton>
               </IonNavLink>
             </div>
           </div>

@@ -72,15 +72,15 @@ function GenerateImageComponent() {
                     </IonCardHeader>
                     <IonCardContent>
                         <img id="myImage" className="result-image" src={result} alt="result" />                        
-                        <IonButton color="light" onClick={downloadImage}><IonIcon icon={save}></IonIcon></IonButton>
+                        <IonButton onClick={downloadImage}><IonIcon icon={save}></IonIcon></IonButton>
                     </IonCardContent>
                     <IonItem>
                         <IonLabel position="floating">Write down here to generate image</IonLabel>
-                        <IonTextarea placeholder="Type something here" autoGrow={true} onIonChange={(e) => setPrompt(e.detail.value!)}></IonTextarea>
+                        <IonTextarea placeholder="Type something here" autoGrow={false} onIonChange={(e) => setPrompt(e.detail.value!)}></IonTextarea>
                     </IonItem>
                     
                 </IonCard>
-                <IonButton color="light" shape="round" class="card-btn" onClick={generateImage}>Generate Image</IonButton>
+                <IonButton shape="round" class="card-btn" onClick={generateImage}>Generate Image</IonButton>
                 
             </div>
         </div>

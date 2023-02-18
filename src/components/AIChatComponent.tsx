@@ -57,7 +57,7 @@ function AIChatComponent() {
         model: "text-davinci-003",
         prompt: prompt,
         temperature: 0.7,
-        max_tokens: 4096
+        max_tokens: 2048
       });
       console.log(completion.data.choices[0].text)
       return completion.data.choices[0].text!.trim();
@@ -137,7 +137,7 @@ function AIChatComponent() {
         </IonList>
       </IonContent>
       <form onSubmit={handleSubmit} className="chat-form">
-          <IonTextarea onClick={scrollToBottom} placeholder="Enter message..." autoGrow={true} value={currentInputMsg} onIonChange={e => setCurrentInputMsg(e.detail.value!)}/>
+          <IonTextarea class='textareaBorder' onClick={scrollToBottom} placeholder="Enter message..." autoGrow={false} value={currentInputMsg} onIonChange={e => setCurrentInputMsg(e.detail.value!)}/>
           <IonButton type="submit" shape='round' color='light'><IonIcon icon={send}></IonIcon></IonButton>          
       </form>
     </>

@@ -235,8 +235,11 @@ http://ionicframework.com/docs/theming/ */
   }
 }
 
-.textarea-container {
-  border-radius: 20px;
-  border: 1px solid var(--ion-color-primary-contrast);
-  padding: 10px;
+.textareaBorder{
+  --border-width: '2px';
+  border: solid;
+  border-radius: 10px 10px 10px 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-right: 5px;
 }

@@ -9,6 +9,7 @@ interface ChatMessage {
   message: string;
   sender: string;
   time: string;
+  date: string;
 }
 
 function AIChatComponent() {
@@ -80,7 +81,8 @@ function AIChatComponent() {
     chatHistory.push({
       message: currentInputMsg.trim(),
       sender: 'Q',
-      time: new Date().toLocaleTimeString()
+      time: new Date().toLocaleTimeString('en-GB'),
+      date: new Date().toLocaleDateString('zh-Hans-CN')
     });
     setChatHistory(Object.assign([], chatHistory));
     const prompt = getPromptByChatHistory();
@@ -97,7 +99,8 @@ function AIChatComponent() {
     chatHistory.push({
       message: aiMsg,
       sender: 'A',
-      time: new Date().toLocaleTimeString()
+      time: new Date().toLocaleTimeString('en-GB'),
+      date: new Date().toLocaleDateString('zh-Hans-CN')
     });
     setChatHistory(Object.assign([], chatHistory));
     scrollToBottom();
@@ -107,6 +110,18 @@ function AIChatComponent() {
     const scrollHeight = listRef.current?.scrollHeight;
     contentRef.current && contentRef.current.scrollToPoint(0,scrollHeight,600);    
     localStorage.setItem('chatHistory',JSON.stringify(chatHistory));
+  }
+
+  const getDateString=(chatDate: string)=>{
+    const currentDate:string = new Date().toLocaleDateString('zh-Hans-CN');
+    const day:number = (new Date(currentDate).getTime() - new Date(chatDate).getTime())/(1000 * 3600 * 24);
+    if(day<1){
+      return ''
+    }else if(day==1){
+      return 'Yesterday'
+    }else{
+      return chatDate
+    }
   }
 
   return (
@@ -126,15 +141,16 @@ function AIChatComponent() {
               <IonAvatar slot={item.sender === 'Q' ? 'end' : 'start'}>
                 <img src={item.sender === 'Q' ? 'assets/icon/puppy.png' : 'assets/icon/ai.png'}/>
               </IonAvatar>
-              <IonLabel className="message-content" class="ion-text-wrap">
+              <IonLabel className="message-content">
                 <IonText>
-                    <p>{item.message}</p>
+                    <p style={{whiteSpace: 'pre-wrap'}}>{item.message}</p>
                 </IonText>
-                <p className="message-time">{item.time}</p>
+                <p className="message-time">{getDateString(item.date)} {item.time}</p>
               </IonLabel>
             </IonItem>
           ))}
         </IonList>
+        <p>{}</p>
       </IonContent>
       <form onSubmit={handleSubmit} className="chat-form">
           <IonTextarea class='textareaBorder' onClick={scrollToBottom} placeholder="Enter message..." autoGrow={false} value={currentInputMsg} onIonChange={e => setCurrentInputMsg(e.detail.value!)}/>

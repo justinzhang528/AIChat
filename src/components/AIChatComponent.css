@@ -41,6 +41,7 @@
 .own-message .message-time {
   font-size: 12px;
   margin-top: 5px;
+  color: #cdcccc;
 }
 
 .other-message .message-content {
@@ -55,6 +56,7 @@
 .other-message .message-time {
   font-size: 12px;
   margin-top: 5px;
+  color: rgb(180, 179, 179);
 }
 
 .chat-form ion-input, .chat-form ion-button {

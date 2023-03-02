@@ -243,3 +243,20 @@ http://ionicframework.com/docs/theming/ */
   padding-right: 10px;
   margin-right: 5px;
 }
+
+ion-modal#api-key-modal {
+  --height: 35%;
+  --width: 90%;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+ion-modal#api-key-modal::part(backdrop) {
+  background: rgb(143, 143, 143);
+  opacity: 1;
+}
+
+ion-modal#api-key-modal ion-toolbar {
+  --background: rgb(66, 140, 255);
+  --color: white;
+}

@@ -1,4 +1,4 @@
-import { CheckboxChangeEventDetail, IonButton, IonContent, IonHeader, IonNavLink, IonPage, IonTitle, IonToggle, IonToolbar, useIonAlert } from '@ionic/react';
+import { CheckboxChangeEventDetail, IonButton, IonContent, IonHeader, IonNavLink, IonPage, IonTitle, IonToggle, IonToolbar, useIonAlert, useIonToast } from '@ionic/react';
 import AIChatComponent from '../components/AIChatComponent'
 import GenerateImageComponent from '../components/GenerateImageComponent';
 import InstructionComponent from '../components/InstructionComponent';
@@ -12,6 +12,7 @@ import { useState } from 'react';
 
 
 const Home: React.FC = () => {
+  const [presentToast] = useIonToast();
   const [presentAlert] = useIonAlert();
   const showInputAlert=()=>{
     presentAlert({
@@ -27,6 +28,7 @@ const Home: React.FC = () => {
           role: 'confirm',
           handler: (alertData) => {
               localStorage.setItem('apikey',alertData.apikey);
+              showToast('API key saved!');
           },
         },
       ],
@@ -40,6 +42,14 @@ const Home: React.FC = () => {
       ],
     })
   }
+
+  const showToast = (message: string) => {
+    presentToast({
+      message: message,
+      duration: 3000,
+      position: 'bottom'
+    });
+  };
 
   const [isShowBanner, setShowBanner] = useState(true);
   const showBanner = async () => {
@@ -85,7 +95,7 @@ const Home: React.FC = () => {
                 <IonButton shape="round" class="card-btn">Generate Image</IonButton>
               </IonNavLink><br></br><br></br>
               <IonNavLink routerDirection="forward" component={() => <InstructionComponent />}>
-                <IonButton shape="round" class="card-btn">Instruction</IonButton>
+                <IonButton shape="round" class="card-btn">User Manual</IonButton>
               </IonNavLink><br></br><br></br>
               <IonButton shape="round" class="card-btn" onClick={showInputAlert}>Enter API Key</IonButton>
               <h6>AdsFree</h6>

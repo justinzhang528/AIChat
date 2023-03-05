@@ -1,15 +1,73 @@
-import { IonButton, IonButtons, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonModal, IonNavLink, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import { useRef } from 'react';
+import { CheckboxChangeEventDetail, IonButton, IonContent, IonHeader, IonNavLink, IonPage, IonTitle, IonToggle, IonToolbar, useIonAlert } from '@ionic/react';
 import AIChatComponent from '../components/AIChatComponent'
 import GenerateImageComponent from '../components/GenerateImageComponent';
+import InstructionComponent from '../components/InstructionComponent';
+import {
+  AdMob,
+  BannerAdOptions,
+  BannerAdPosition,
+  BannerAdSize,
+} from '@capacitor-community/admob';
+import { useState } from 'react';
+
 
 const Home: React.FC = () => {
-  const modal = useRef<HTMLIonModalElement>(null);
-  const apiInputRef = useRef<HTMLIonInputElement>(null);
-  function dismiss() {
-    console.log('clicked')
-    modal.current?.dismiss();
+  const [presentAlert] = useIonAlert();
+  const showInputAlert=()=>{
+    presentAlert({
+      header: 'Please Enter Your API Key:',
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },  
+        {
+          text: 'OK',
+          role: 'confirm',
+          handler: (alertData) => {
+              localStorage.setItem('apikey',alertData.apikey);
+          },
+        },
+      ],
+      inputs: [
+        {
+          name: 'apikey',
+          type: 'textarea',
+          placeholder: 'API Key',
+          value: localStorage.getItem('apikey')
+        },
+      ],
+    })
   }
+
+  const [isShowBanner, setShowBanner] = useState(true);
+  const showBanner = async () => {
+    if(localStorage.getItem('isAdsFree') === 'true'){
+      return;
+    }
+    const options: BannerAdOptions = {
+      adId: 'ca-app-pub-3940256099942544/2934735716', // demo ad unit id,
+      adSize: BannerAdSize.BANNER,
+      position: BannerAdPosition.BOTTOM_CENTER,
+      isTesting: true,
+    };
+    await AdMob.showBanner(options);
+    setShowBanner(false);
+  };
+
+  const onToggleChanged=(event: CustomEvent<CheckboxChangeEventDetail>)=>{
+    if(event.detail.checked){
+      AdMob.hideBanner();
+    }else{
+      AdMob.resumeBanner();
+    }
+    localStorage.setItem('isAdsFree',String(event.detail.checked));
+  }
+
+  if(isShowBanner)
+    showBanner();
+
   return (
     <IonPage>
       <IonHeader>
@@ -26,26 +84,15 @@ const Home: React.FC = () => {
               <IonNavLink routerDirection="forward" component={() => <GenerateImageComponent />}>
                 <IonButton shape="round" class="card-btn">Generate Image</IonButton>
               </IonNavLink><br></br><br></br>
-              <IonButton id="open-api-key-input" shape="round" class="card-btn">Enter API Key</IonButton>
+              <IonNavLink routerDirection="forward" component={() => <InstructionComponent />}>
+                <IonButton shape="round" class="card-btn">Instruction</IonButton>
+              </IonNavLink><br></br><br></br>
+              <IonButton shape="round" class="card-btn" onClick={showInputAlert}>Enter API Key</IonButton>
+              <h6>AdsFree</h6>
+              <IonToggle onIonChange={onToggleChanged} color="success" enableOnOffLabels={true}></IonToggle>
             </div>
           </div>
-        </IonContent>        
-        <IonModal id="api-key-modal" ref={modal} trigger="open-api-key-input">
-          <IonContent>
-            <IonToolbar>
-              <IonTitle>API KEY</IonTitle>
-              <IonButtons slot="end">
-                <IonButton onClick={() => {console.log('clicked')}}>
-                  Comfirm
-                </IonButton>
-              </IonButtons>
-            </IonToolbar>
-            <IonItem>
-              <IonLabel>Enter Your API Key:</IonLabel>
-              <IonInput ref={apiInputRef} placeholder="Your API Key" />
-            </IonItem>
-          </IonContent>
-        </IonModal>
+        </IonContent>
     </IonPage>
   );
 };

@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
-import { IonBackButton, IonButtons, IonHeader, IonContent, IonToolbar, IonTitle, IonCard, IonCardHeader, IonIcon, IonCardContent, IonButton, IonTextarea, IonCardSubtitle, IonLabel, IonItem, useIonToast } from '@ionic/react';
+import { IonBackButton, IonButtons, IonHeader, IonContent, IonToolbar, IonTitle, IonCard, IonCardHeader, IonIcon, IonCardContent, IonButton, IonTextarea, IonLabel, IonItem, useIonToast, IonLoading } from '@ionic/react';
 import { save } from 'ionicons/icons';
 import { Configuration, OpenAIApi } from 'openai';
-import config from '../config';
 
 function GenerateImageComponent() {
-    const [present] = useIonToast();
+    const [presentToast] = useIonToast();
     const [prompt, setPrompt] = useState("");
     const [result, setResult] = useState("assets/icon/openai.png");
-    const [loading, setLoading] = useState(false);
-    const [placeholder, setPlaceholder] = useState("");
+    const [showLoading, setShowLoading] = useState(false);
     const configuration = new Configuration({
-        apiKey: config.OPENAI_API_KEY,
+        apiKey: localStorage.getItem('apikey')!,
     });
 
-    const presentToast = (message: string) => {
-      present({
+    const showToast = (message: string) => {
+      presentToast({
         message: message,
         duration: 3000,
         position: 'bottom'
@@ -26,24 +24,24 @@ function GenerateImageComponent() {
 
     const generateImage = async () => {
       try{
-        setPlaceholder(`Search ${prompt}..`);
-        setLoading(true);
+        setShowLoading(true);
         const res = await openai.createImage({
             prompt: prompt,
             n: 1,
-            size: "1024x1024",
+            size: "512x512",
         });
-        setLoading(false);
         setResult(res.data.data[0].url!);
+        setShowLoading(false);
       }catch(error: any){
         if (error.response) {
           console.log(error.response.status);
           console.log(error.response.data);
-          presentToast(error.response.data.error.message);
+          showToast(error.response.data.error.message);
         } else {
-          presentToast(error.message);
+          showToast(error.message);
         }
-      }
+      }      
+      setShowLoading(false);
     };
 
     const downloadImage = () => {
@@ -84,6 +82,12 @@ function GenerateImageComponent() {
                 
             </div>
         </div>
+        <IonLoading
+          cssClass="my-custom-class"
+          isOpen={showLoading}
+          onDidDismiss={() => setShowLoading(false)}
+          message={'Generating Image...'}
+        />
       </IonContent>
     </>
   );

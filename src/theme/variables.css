@@ -235,13 +235,11 @@ http://ionicframework.com/docs/theming/ */
   }
 }
 
-.textareaBorder{
+.textInputBorder{
   --border-width: '2px';
   border: solid;
   border-radius: 10px 10px 10px 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-  margin-right: 5px;
+  padding: 10px 10px;
 }
 
 ion-modal#api-key-modal {
@@ -259,4 +257,13 @@ ion-modal#api-key-modal::part(backdrop) {
 ion-modal#api-key-modal ion-toolbar {
   --background: rgb(66, 140, 255);
   --color: white;
+}
+
+ion-title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
 }

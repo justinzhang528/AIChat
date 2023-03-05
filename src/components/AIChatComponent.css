@@ -28,12 +28,11 @@
   justify-content: center;
   align-items: center;
   height: 100px;
-  padding: 0 10px;
 }
 
 .own-message .message-content {
   background-color: #007aff;
-  color: #ffffff;
+  color: #ffffff; 
   padding: 10px;
   border-radius: 20px 0px 20px 20px;
 }
@@ -62,14 +61,14 @@
 .chat-form ion-input, .chat-form ion-button {
   width: 100%;
   max-width: 500px;
-  height: 40px;
+  height: 50px;
   font-size: 14px;
   margin-right: 10px;
 }
 
 .chat-form ion-button {
   height: 50px;
-  width: 80px;
+  width: 65px;
 }
 
 .transparent {

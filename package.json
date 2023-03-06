@@ -21,6 +21,8 @@
     "@types/react-dom": "^18.0.6",
     "@types/react-router": "^5.1.11",
     "@types/react-router-dom": "^5.1.7",
+    "cordova-plugin-screen-orientation": "^3.0.3",
+    "es6-promise-plugin": "^4.2.2",
     "history": "^4.9.0",
     "ionicons": "^6.0.3",
     "openai": "^3.2.1",
